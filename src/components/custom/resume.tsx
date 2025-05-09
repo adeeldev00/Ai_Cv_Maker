@@ -5,19 +5,19 @@ export default function CVMacWindow() {
   const [activeSection, setActiveSection] = useState('summary');
 
   const personalInfo = {
-    name: "Azhar Hayat",
-    phone: "+92 307 669 6182",
-    email: "Azharhayat271@gmail.com",
-    linkedin: "linkedin.com/in/azhar-hayat-a44779254",
-    github: "github.com/Azharhayat271",
+    name: "Muhammad Adeel",
+    phone: "+92 322 7711450",
+    email: "adeeldev00@gmail.com",
+    linkedin: "linkedin.com/in/muhammad-adeel-aa29a923a/",
+    github: "github.com/adeeldev00",
     website: "azharhayat.me"
   };
 
   const education = {
-    university: "University of Engineering and Technology, Lahore",
+    university: "GCUF",
     degree: "BSc in Computer Science",
     gpa: "CGPA: 3.3",
-    location: "Narowal, Pakistan",
+    location: "Lahore, Pakistan",
     period: "Nov 2021 – Present"
   };
 
@@ -56,8 +56,6 @@ export default function CVMacWindow() {
 
   const achievements = [
     "2nd Place - Devathon by Devsinc (2024): Developed a complete web app in a competitive environment showcasing advanced full-stack skills",
-    "Vice Chairperson - IEEE Computer Society, UET Narowal (2024 – Present)",
-    "Meta React Basics — HackerRank Certificate"
   ];
 
   return (
