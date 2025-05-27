@@ -14,26 +14,42 @@ interface SkillsProps {
 
 const Skills = ({ cv, setCV, setActiveTab }: SkillsProps) => {
   const updateSkills = (skillsString: string) => {
-    const skillsArray = skillsString.split(',').map(skill => skill.trim()).filter(skill => skill);
-    setCV(prev => ({
+    const skillsArray = skillsString
+      .split(",")
+      .map((skill) => skill.trim())
+      .filter((skill) => skill);
+    setCV((prev) => ({
       ...prev,
-      skills: skillsArray
+      skills: skillsArray,
     }));
   };
 
   const updateLanguages = (languagesString: string) => {
-    const languagesArray = languagesString.split(',').map(lang => lang.trim()).filter(lang => lang);
-    setCV(prev => ({
+    const languagesArray = languagesString
+      .split(",")
+      .map((lang) => ({
+        language: lang.trim(),
+        proficiency: "", // You can let the user fill this later
+      }))
+      .filter((lang) => lang);
+    setCV((prev) => ({
       ...prev,
-      languages: languagesArray
+      languages: languagesArray,
     }));
   };
 
   const updateCertifications = (certsString: string) => {
-    const certsArray = certsString.split(',').map(cert => cert.trim()).filter(cert => cert);
-    setCV(prev => ({
+    const certsArray = certsString
+      .split(",")
+      .map((cert) => ({
+        name: cert.trim(),
+        issuer: "", // You can update this via UI later
+        date: "", // You can update this via UI later
+      }))
+      .filter((cert) => cert);
+    setCV((prev) => ({
       ...prev,
-      certifications: certsArray
+      certifications: certsArray,
     }));
   };
 
@@ -44,15 +60,16 @@ const Skills = ({ cv, setCV, setActiveTab }: SkillsProps) => {
         <div className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="skills">Technical Skills *</Label>
-            <Textarea 
-              id="skills" 
+            <Textarea
+              id="skills"
               value={cv.skills?.join(", ") || ""}
               onChange={(e) => updateSkills(e.target.value)}
               placeholder="JavaScript, React, Project Management, Graphic Design, etc."
               rows={4}
             />
             <p className="text-xs text-muted-foreground mt-1">
-              List your technical skills separated by commas. These will be displayed as tags on your CV.
+              List your technical skills separated by commas. These will be
+              displayed as tags on your CV.
             </p>
           </div>
         </div>
@@ -63,9 +80,9 @@ const Skills = ({ cv, setCV, setActiveTab }: SkillsProps) => {
         <div className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="languages">Languages You Speak</Label>
-            <Textarea 
-              id="languages" 
-              value={cv.languages?.join(", ") || ""}
+            <Textarea
+              id="languages"
+              value={cv.languages?.map(lang => lang.language).join(", ") || ""}
               onChange={(e) => updateLanguages(e.target.value)}
               placeholder="English, Spanish, French, etc."
               rows={3}
@@ -82,28 +99,26 @@ const Skills = ({ cv, setCV, setActiveTab }: SkillsProps) => {
         <div className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="certifications">Professional Certifications</Label>
-            <Textarea 
-              id="certifications" 
-              value={cv.certifications?.join(", ") || ""}
+            <Textarea
+              id="certifications"
+              value={cv.certifications?.map(cat=> cat.name)?.join(", ") || ""}
               onChange={(e) => updateCertifications(e.target.value)}
               placeholder="AWS Certified, PMP, Google Analytics, etc."
               rows={3}
             />
             <p className="text-xs text-muted-foreground mt-1">
-              List any professional certifications you've earned, separated by commas.
+              List any professional certifications you've earned, separated by
+              commas.
             </p>
           </div>
         </div>
       </Card>
 
       <div className="flex justify-between">
-        <Button 
-          variant="outline" 
-          onClick={() => setActiveTab("education")}
-        >
+        <Button variant="outline" onClick={() => setActiveTab("education")}>
           Back to Education
         </Button>
-        <Button 
+        <Button
           onClick={() => {
             // Validate at least skills are provided
             if (!cv.skills || cv.skills.length === 0) {

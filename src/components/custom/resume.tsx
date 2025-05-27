@@ -10,7 +10,7 @@ export default function CVMacWindow() {
     email: "adeeldev00@gmail.com",
     linkedin: "linkedin.com/in/muhammad-adeel-aa29a923a/",
     github: "github.com/adeeldev00",
-    website: "azharhayat.me"
+    website: "Adeeldev00.me"
   };
 
   const education = {
@@ -74,7 +74,7 @@ export default function CVMacWindow() {
               <span className="opacity-0 group-hover:opacity-70 text-xs font-bold">+</span>
             </div>
           </div>
-          <div className="flex-1 text-xs text-center text-muted-foreground">Azhar Hayat CV</div>
+          <div className="flex-1 text-xs text-center text-muted-foreground">Adeel Ashraf CV</div>
           <div className="flex items-center gap-2">
             <div className="text-xs text-muted-foreground/70 px-1.5 py-0.5 rounded bg-muted/30 border border-border/20">CV</div>
             <div className="flex gap-1">

@@ -479,7 +479,7 @@ const Index = () => {
               <div className="h-5 w-5 rounded-md bg-primary/20 flex items-center justify-center text-primary">
                 <Command size={12} />
               </div>
-              <span>Made with AI-powered tools</span>
+              <span>Built by Adeel | Powered by <strong>Naveed Team</strong></span>
             </div>
             <p>&copy; {new Date().getFullYear()} CV.AI. All rights reserved.</p>
           </div>

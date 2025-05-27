@@ -73,7 +73,7 @@ const CreateCoverLetter = () => {
       return;
     }
     
-    const timestamp = getCurrentTimestamp();
+    const timestamp = getCurrentTimestamp(); //get the current timestamp
     saveCoverLetter({
       ...coverLetter,
       createdAt: timestamp,
@@ -108,9 +108,10 @@ const CreateCoverLetter = () => {
         useCORS: true,
         windowWidth: 800, // Control the rendering width
       });
-  
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF("p", "mm", "a4");
+      
+      
+      const imgData = canvas.toDataURL("image/png"); //convert canvas to image data
+      const pdf = new jsPDF("p", "mm", "a4"); // create a pdf of A4 size
       const imgWidth = 180; // Reduced from 190 to fit better
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
       
@@ -247,6 +248,7 @@ const CreateCoverLetter = () => {
               </CardContent>
             </Card>
             
+            {/* content box */}
             <Card>
               <CardHeader>
                 <CardTitle>Cover Letter</CardTitle>

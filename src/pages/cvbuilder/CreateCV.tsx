@@ -19,7 +19,7 @@ const CreateCV = () => {
     id: generateId(),
     userId,
     name: "My CV",
-    personalInfo: {
+    personalInfo: { 
       fullName: "",
       email: "",
       phone: "",
@@ -336,7 +336,7 @@ const CreateCV = () => {
       if (cv.languages?.some(lang => lang.language)) {
         addSection("LANGUAGES");
         const langsPerRow = 3;
-        let langRows = [];
+        const langRows = [];
         let currentRow = [];
         
         cv.languages.forEach((lang, idx) => {
@@ -377,7 +377,8 @@ const CreateCV = () => {
   
 
   return (
-    <div className="min-h-screen bg-background">
+   <>
+    <div className="min-h-screen bg-background ">
       <div className="border-b">
         <div className="container mx-auto py-4 px-4 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2">
@@ -429,6 +430,7 @@ const CreateCV = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
