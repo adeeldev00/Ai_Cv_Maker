@@ -8,6 +8,8 @@ import {
   Image,
   Sparkles,
   Palette,
+  Menu,
+  X
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
@@ -17,6 +19,7 @@ import Workflow from "@/components/custom/workflow";
 
 const Index = () => {
   const [scrollY, setScrollY] = useState(0);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   // Animation on scroll effect
   useEffect(() => {
@@ -47,10 +50,14 @@ const Index = () => {
     };
   }, []);
 
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       {/* Navigation Bar with subtle animation and glass effect */}
-      <header
+      {/* <header
         className="border-b sticky top-0 bg-background/80 backdrop-blur-md z-10 transition-all duration-300"
         style={{
           boxShadow: scrollY > 10 ? "0 4px 20px rgba(0,0,0,0.05)" : "none",
@@ -93,7 +100,73 @@ const Index = () => {
             </Button>
           </div>
         </div>
-      </header>
+      </header> */}
+
+      <header
+      className="border-b sticky top-0 bg-background/80 backdrop-blur-md z-10 transition-all duration-300"
+      style={{
+        boxShadow: scrollY > 10 ? "0 4px 20px rgba(0,0,0,0.05)" : "none",
+      }}
+    >
+      <div className="container mx-auto py-4 px-4 flex items-center justify-between">
+        {/* Logo Section */}
+        <div className="flex items-center gap-2">
+          <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-primary/90 to-primary/40 flex items-center justify-center text-primary-foreground">
+            <Command size={20} />
+          </div>
+          <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+            CV.AI
+          </h1>
+        </div>
+
+        {/* Mobile Toggle Icon (Visible on Small Screens) */}
+        <div className="lg:hidden">
+          <button onClick={toggleMenu} aria-label="Toggle navigation menu">
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
+
+        {/* Navigation Links (Hidden on Small Screens, Visible on Large Screens) */}
+        <div
+          className={`lg:flex lg:items-center lg:gap-4 absolute lg:static top-16 left-0 w-full lg:w-auto bg-background lg:bg-transparent transition-all duration-300 ${
+            isMenuOpen ? "block" : "hidden"
+          } lg:block`}
+        >
+          <div className="flex flex-col lg:flex-row items-center gap-4 p-4 lg:p-0">
+            <Link
+              to="/dashboard"
+              className="text-sm font-medium hover:text-primary transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Dashboard
+            </Link>
+            <Link
+              to="/about"
+              className="text-sm font-medium hover:text-primary transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              About Us
+            </Link>
+            <Link
+              to="/contact"
+              className="text-sm font-medium hover:text-primary transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Contact
+            </Link>
+            <Button
+              variant="outline"
+              className="hover:bg-primary/10 transition-all w-full lg:w-auto"
+              asChild
+            >
+              <Link to="/dashboard" onClick={() => setIsMenuOpen(false)}>
+                Sign In
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </div>
+    </header>
 
       {/* Hero Section with animated gradient and floating elements */}
       <section className="relative py-20 px-4 bg-gradient-to-b from-background via-background to-muted/30 overflow-hidden">

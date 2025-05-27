@@ -8,7 +8,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ArrowLeft, Save, Download, Wand2 } from "lucide-react";
-import { generateId, saveCoverLetter, getCVs, getCurrentTimestamp } from "@/lib/storage";
+import {
+  generateId,
+  saveCoverLetter,
+  getCVs,
+  getCurrentTimestamp,
+} from "@/lib/storage";
 import { toast } from "@/components/ui/use-toast";
 
 const CreateCoverLetter = () => {
@@ -29,21 +34,26 @@ const CreateCoverLetter = () => {
   });
 
   const cvs = getCVs();
-  
+
   const handleGenerateCoverLetter = () => {
-    if (!coverLetter.jobDescription || !coverLetter.jobTitle || !coverLetter.companyName) {
+    if (
+      !coverLetter.jobDescription ||
+      !coverLetter.jobTitle ||
+      !coverLetter.companyName
+    ) {
       toast({
         title: "Missing Information",
-        description: "Please provide the job title, company name, and job description.",
+        description:
+          "Please provide the job title, company name, and job description.",
         variant: "destructive",
       });
       return;
     }
-    
+
     setIsGenerating(true);
-    
+
     setTimeout(() => {
-      const generatedContent = 
+      const generatedContent =
         `Dear Hiring Manager,\n\n` +
         `I am writing to express my interest in the ${coverLetter.jobTitle} position at ${coverLetter.companyName}. ` +
         `With my background and skills, I believe I would be a valuable addition to your team.\n\n` +
@@ -53,38 +63,44 @@ const CreateCoverLetter = () => {
         `Thank you for considering my application.\n\n` +
         `Sincerely,\n` +
         `[Your Name]`;
-      
-      setCoverLetter(prev => ({ ...prev, content: generatedContent }));
+
+      setCoverLetter((prev) => ({ ...prev, content: generatedContent }));
       setIsGenerating(false);
       toast({
         title: "Cover Letter Generated",
-        description: "Your cover letter has been generated. Feel free to edit it to better match your experience.",
+        description:
+          "Your cover letter has been generated. Feel free to edit it to better match your experience.",
       });
     }, 2000);
   };
-  
+
   const handleSaveCoverLetter = () => {
-    if (!coverLetter.content || !coverLetter.jobTitle || !coverLetter.companyName) {
+    if (
+      !coverLetter.content ||
+      !coverLetter.jobTitle ||
+      !coverLetter.companyName
+    ) {
       toast({
         title: "Missing Information",
-        description: "Please provide the job title, company name, and cover letter content.",
+        description:
+          "Please provide the job title, company name, and cover letter content.",
         variant: "destructive",
       });
       return;
     }
-    
+
     const timestamp = getCurrentTimestamp(); //get the current timestamp
     saveCoverLetter({
       ...coverLetter,
       createdAt: timestamp,
       updatedAt: timestamp,
     });
-    
+
     toast({
       title: "Cover Letter Saved",
       description: "Your cover letter has been saved successfully.",
     });
-    
+
     navigate("/dashboard");
   };
 
@@ -97,26 +113,26 @@ const CreateCoverLetter = () => {
       });
       return;
     }
-  
+
     try {
       // Add temporary styling for PDF export
-      coverLetterRef.current.classList.add('pdf-export-active');
-      
+      coverLetterRef.current.classList.add("pdf-export-active");
+
       const canvas = await html2canvas(coverLetterRef.current, {
         scale: 1, // Reduced from 2 to 1 for smaller file size
         logging: false,
         useCORS: true,
         windowWidth: 800, // Control the rendering width
       });
-      
-      
+
       const imgData = canvas.toDataURL("image/png"); //convert canvas to image data
       const pdf = new jsPDF("p", "mm", "a4"); // create a pdf of A4 size
       const imgWidth = 180; // Reduced from 190 to fit better
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      
+
       // Check if content fits on one page
-      if (imgHeight > 250) { // A4 height is 297mm, leaving space for margins
+      if (imgHeight > 250) {
+        // A4 height is 297mm, leaving space for margins
         // If too tall, reduce width to make content fit
         const adjustedWidth = 160;
         const adjustedHeight = (canvas.height * adjustedWidth) / canvas.width;
@@ -124,16 +140,20 @@ const CreateCoverLetter = () => {
       } else {
         pdf.addImage(imgData, "PNG", 15, 10, imgWidth, imgHeight);
       }
-  
-      pdf.save(`${coverLetter.name || "CoverLetter"}_${coverLetter.companyName || ""}.pdf`);
-      
+
+      pdf.save(
+        `${coverLetter.name || "CoverLetter"}_${
+          coverLetter.companyName || ""
+        }.pdf`
+      );
+
       toast({
         title: "PDF Downloaded",
         description: "Your cover letter has been exported as PDF.",
       });
-      
+
       // Remove temporary styling
-      coverLetterRef.current.classList.remove('pdf-export-active');
+      coverLetterRef.current.classList.remove("pdf-export-active");
     } catch (error) {
       toast({
         title: "Error",
@@ -141,7 +161,7 @@ const CreateCoverLetter = () => {
         variant: "destructive",
       });
       console.error("PDF generation error:", error);
-      coverLetterRef.current?.classList.remove('pdf-export-active');
+      coverLetterRef.current?.classList.remove("pdf-export-active");
     }
   };
 
@@ -153,7 +173,10 @@ const CreateCoverLetter = () => {
             <h1 className="text-2xl font-bold">CV.AI</h1>
           </Link>
           <div className="flex items-center gap-4">
-            <Link to="/dashboard" className="text-sm font-medium hover:text-primary">
+            <Link
+              to="/dashboard"
+              className="text-sm font-medium hover:text-primary"
+            >
               Dashboard
             </Link>
           </div>
@@ -163,12 +186,15 @@ const CreateCoverLetter = () => {
       <div className="container mx-auto py-8 px-4">
         <div className="mb-6">
           <Button variant="ghost" asChild className="p-0 mb-4">
-            <Link to="/dashboard" className="flex items-center text-muted-foreground hover:text-foreground">
+            <Link
+              to="/dashboard"
+              className="flex items-center text-muted-foreground hover:text-foreground"
+            >
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Dashboard
             </Link>
           </Button>
-          
+
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
               <h1 className="text-3xl font-bold">Create Cover Letter</h1>
@@ -176,7 +202,7 @@ const CreateCoverLetter = () => {
                 Generate a personalized cover letter for your job application.
               </p>
             </div>
-            
+
             <div className="flex gap-2">
               <Button variant="outline" onClick={handleSaveCoverLetter}>
                 <Save className="mr-2 h-4 w-4" />
@@ -189,7 +215,7 @@ const CreateCoverLetter = () => {
             </div>
           </div>
         </div>
-        
+
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_350px] gap-8">
           <div className="space-y-6">
             <Card>
@@ -199,46 +225,66 @@ const CreateCoverLetter = () => {
               <CardContent className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="cover-letter-name">Cover Letter Name</Label>
-                  <Input 
-                    id="cover-letter-name" 
+                  <Input
+                    id="cover-letter-name"
                     value={coverLetter.name}
-                    onChange={(e) => setCoverLetter(prev => ({ ...prev, name: e.target.value }))}
+                    onChange={(e) =>
+                      setCoverLetter((prev) => ({
+                        ...prev,
+                        name: e.target.value,
+                      }))
+                    }
                   />
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="job-title">Job Title *</Label>
-                  <Input 
-                    id="job-title" 
+                  <Input
+                    id="job-title"
                     value={coverLetter.jobTitle}
-                    onChange={(e) => setCoverLetter(prev => ({ ...prev, jobTitle: e.target.value }))}
+                    onChange={(e) =>
+                      setCoverLetter((prev) => ({
+                        ...prev,
+                        jobTitle: e.target.value,
+                      }))
+                    }
                     placeholder="Software Developer, Marketing Manager, etc."
                   />
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="company-name">Company Name *</Label>
-                  <Input 
-                    id="company-name" 
+                  <Input
+                    id="company-name"
                     value={coverLetter.companyName}
-                    onChange={(e) => setCoverLetter(prev => ({ ...prev, companyName: e.target.value }))}
+                    onChange={(e) =>
+                      setCoverLetter((prev) => ({
+                        ...prev,
+                        companyName: e.target.value,
+                      }))
+                    }
                     placeholder="Company Inc."
                   />
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="job-description">Job Description *</Label>
-                  <Textarea 
-                    id="job-description" 
+                  <Textarea
+                    id="job-description"
                     value={coverLetter.jobDescription}
-                    onChange={(e) => setCoverLetter(prev => ({ ...prev, jobDescription: e.target.value }))}
+                    onChange={(e) =>
+                      setCoverLetter((prev) => ({
+                        ...prev,
+                        jobDescription: e.target.value,
+                      }))
+                    }
                     placeholder="Paste the job description here..."
                     rows={10}
                   />
                 </div>
-                
-                <Button 
-                  onClick={handleGenerateCoverLetter} 
+
+                <Button
+                  onClick={handleGenerateCoverLetter}
                   className="w-full"
                   disabled={isGenerating}
                 >
@@ -247,7 +293,7 @@ const CreateCoverLetter = () => {
                 </Button>
               </CardContent>
             </Card>
-            
+
             {/* content box */}
             <Card>
               <CardHeader>
@@ -256,10 +302,15 @@ const CreateCoverLetter = () => {
               <CardContent>
                 <div className="space-y-2">
                   <Label htmlFor="cover-letter-content">Content</Label>
-                  <Textarea 
-                    id="cover-letter-content" 
+                  <Textarea
+                    id="cover-letter-content"
                     value={coverLetter.content}
-                    onChange={(e) => setCoverLetter(prev => ({ ...prev, content: e.target.value }))}
+                    onChange={(e) =>
+                      setCoverLetter((prev) => ({
+                        ...prev,
+                        content: e.target.value,
+                      }))
+                    }
                     placeholder="Your cover letter content will appear here..."
                     rows={15}
                   />
@@ -267,33 +318,41 @@ const CreateCoverLetter = () => {
               </CardContent>
             </Card>
           </div>
-          
-          <div className="bg-muted p-6 rounded-lg">
-            <h3 className="text-lg font-semibold mb-4">Cover Letter Preview</h3>
-            <p className="text-muted-foreground text-sm mb-6">
+
+          <div className="bg-muted p-4 sm:p-6 rounded-lg">
+            <h3 className="text-lg font-semibold mb-2 sm:mb-4">
+              Cover Letter Preview
+            </h3>
+            <p className="text-muted-foreground text-sm mb-4 sm:mb-6">
               This preview will be exported as PDF.
             </p>
-            
-            <div ref={coverLetterRef} className="bg-white p-8 rounded-md pdf-export">
-  <div className="space-y-4 text-sm"> {/* Reduced spacing and smaller font */}
-    <div>
-      <p>Date: {new Date().toLocaleDateString()}</p>
-    </div>
-    
-    <div>
-      <p>Hiring Manager</p>
-      <p>{coverLetter.companyName || "[Company Name]"}</p>
-    </div>
-    
-    <div>
-      <p>Subject: Application for {coverLetter.jobTitle || "[Position]"} Position</p>
-    </div>
-    
-    <div className="whitespace-pre-wrap text-xs"> {/* Smaller font for content */}
-      {coverLetter.content || "Your cover letter content will appear here after generation."}
-    </div>
-  </div>
-</div>
+
+            <div
+              ref={coverLetterRef}
+              className="bg-white p-4 sm:p-8 rounded-md pdf-export w-full max-w-full"
+            >
+              <div className="space-y-2 sm:space-y-4 text-sm">
+                {" "}
+                {/* Reduced spacing on mobile */}
+                <div>
+                  <p>Date: {new Date().toLocaleDateString()}</p>
+                </div>
+                <div>
+                  <p>Hiring Manager</p>
+                  <p>{coverLetter.companyName || "[Company Name]"}</p>
+                </div>
+                <div>
+                  <p>
+                    Subject: Application for{" "}
+                    {coverLetter.jobTitle || "[Position]"} Position
+                  </p>
+                </div>
+                <div className="whitespace-pre-wrap text-xs">
+                  {coverLetter.content ||
+                    "Your cover letter content will appear here after generation."}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
